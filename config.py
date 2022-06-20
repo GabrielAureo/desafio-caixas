@@ -1,0 +1,1 @@
+NUM_CAIXAS = 3

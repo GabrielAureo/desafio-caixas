@@ -1,5 +1,6 @@
 from typing import Tuple, Union
 from caixa import CaixaStatus, Caixa
+from caixa_resposta import CaixaResposta
 from cliente import Cliente
 
 class OrquestradorCaixas:
@@ -18,36 +19,36 @@ class OrquestradorCaixas:
         return next(
             (caixa for caixa in self.caixas if caixa.status == CaixaStatus.LIVRE), False)
 
-    def atende_cliente(self, cliente: Cliente) -> Tuple[bool, str]:
+    def atende_cliente(self, cliente: Cliente) -> CaixaResposta:
         caixa_livre = self.__get_caixa_livre()
         if(caixa_livre):
             return caixa_livre.atende_cliente(cliente=cliente)
         else:
             self.fila_de_espera.append(cliente)
-            return False, "Ocupado"
+            return CaixaResposta(False, "Ocupado")
 
-    def termina_atendimento(self, num_caixa: int) -> Tuple[bool, str]:
+    def termina_atendimento(self, num_caixa: int) -> CaixaResposta:
         if(not self.caixa_valido(num_caixa=num_caixa)):
-            return False, "Número inválido de caixa"
+            return CaixaResposta(False, "Número inválido de caixa")
 
         resposta = self.caixas[num_caixa - 1].termina_atendimento()
 
-        if(resposta[0] and self.clientes_esperando):
+        if(resposta.sucesso and self.clientes_esperando):
             proximo_cliente = self.fila_de_espera.pop(0)
             self.atende_cliente(proximo_cliente)
 
         return resposta
 
-    def tira_caixa_do_ar(self, num_caixa: int) -> Tuple[bool, str]:
+    def tira_caixa_do_ar(self, num_caixa: int) -> CaixaResposta:
         if(not self.caixa_valido(num_caixa=num_caixa)):
-            return False, "Número inválido de caixa"
+            return CaixaResposta(False, "Número inválido de caixa")
 
         resposta = self.caixas[num_caixa - 1].tira_do_ar()
         return resposta
 
-    def coloca_caixa_no_ar(self, num_caixa: int) -> Tuple[bool, str]:
+    def coloca_caixa_no_ar(self, num_caixa: int) -> CaixaResposta:
         if(not self.caixa_valido(num_caixa=num_caixa)):
-            return False, "Número inválido de caixa"
+            return CaixaResposta(False, "Número inválido de caixa")
 
         resposta = self.caixas[num_caixa - 1].coloca_no_ar()
         return resposta

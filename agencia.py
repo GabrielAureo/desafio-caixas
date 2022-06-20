@@ -41,22 +41,22 @@ Insira o código da próxima operação:
     def atende_cliente(self) -> None:
         cliente = self.__entrada_cliente()
         resposta = self.orquestrador.atende_cliente(cliente=cliente)
-        print(resposta[1])
+        print(resposta.mensagem)
     
     def finaliza_atendimento(self) -> None:
         num_caixa = self.__entrada_caixa()
         resposta = self.orquestrador.termina_atendimento(num_caixa=num_caixa)
-        print(resposta[1])
+        print(resposta.mensagem)
 
     def tira_caixa_do_ar(self) -> None:
         num_caixa = self.__entrada_caixa()
         resposta = self.orquestrador.tira_caixa_do_ar(num_caixa=num_caixa)
-        print(resposta[1])
+        print(resposta.mensagem)
     
     def coloca_caixa_no_ar(self) -> None:
         num_caixa = self.__entrada_caixa()
         resposta = self.orquestrador.coloca_caixa_no_ar(num_caixa=num_caixa)
-        print(resposta[1])
+        print(resposta.mensagem)
         
     def executa(self) -> None:
         while(True):
